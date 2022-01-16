@@ -26,8 +26,13 @@ public:
     }
 
     void push_back(T value) {
-        vec_[size_] = value;
-        size_++;
+        if (size_ < capacity_) {
+            vec_[size_] = value;
+            size_++;
+        }
+        else {
+            capacity_ *= 2;
+        } 
     }
 
     bool empty() const {
