@@ -11,6 +11,16 @@ public:
         , vec_{new T[capacity_]}
     {}
 
+    Vector(const Vector& other)
+        : size_(other.size_)
+        , capacity_(other.capacity_)
+        , vec_(new T[capacity_])
+    {
+        for (size_t i = 0; i < other.size(); i++) {
+            vec_[i] = other.vec_[i];
+        }
+    }
+
     ~Vector() {
         delete [] vec_;
     }
