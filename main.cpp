@@ -1,3 +1,5 @@
+#include <exception>
+#include <iostream>
 #include <stddef.h>
 
 namespace ab {
@@ -32,7 +34,38 @@ public:
         }
         else {
             capacity_ *= 2;
+            T* newVec = new T[capacity_];
+            for (size_t i = 0; i < size_; i++) {
+                newVec[i] = vec_[i];
+            }
+            newVec[size_] = value;
+            size_++;
+            delete [] vec_;
+            vec_ = newVec;
         } 
+    }
+
+    void pop_back() {
+        if (size_ == 0) {
+            throw std::runtime_error("Pop back on empty vector!");
+        }
+        size_--;
+    }
+
+    void reserve(size_t capacity) {
+        if (capacity > size_) {
+            capacity_ = capacity;
+        }
+    }
+
+    void shrink_to_fit() {
+        capacity_ = size_;
+    }
+
+    void resize(size_t size) {
+        if(size > 0) {
+            size_ = size;
+        }
     }
 
     bool empty() const {
@@ -59,8 +92,19 @@ public:
         return true;
     }
 
-    bool operator !=(const Vector& other) const {
-        return !(*this == other);
+    bool operator!=(const Vector& other) const {
+        return *this != other;
+    }
+
+    T& at(size_t index) {
+        if (index < 0 || index >= size_) {
+            throw std::runtime_error("At - out of bounds!");
+        }
+        return vec_[index];
+    }
+
+    T& operator[](size_t index) {
+        return vec_[index];
     }
 
 private:
@@ -70,6 +114,24 @@ private:
 };
 }
 
+void printVector(ab::Vector<int> v) {
+    for (size_t i = 0; i < v.size(); i++) {
+        std::cout << v[i] << ' ';
+    }
+    std::cout << '\n';
+}
+
 int main() {
+    ab::Vector<int> v;
+    for (size_t i = 0; i < 10; i++) {
+        v.push_back(i);
+    }
+    printVector(v);
+    
+    v.pop_back();
+    
+
+    printVector(v);
+
     return 0;
 }
