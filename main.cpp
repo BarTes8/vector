@@ -1,6 +1,7 @@
 #include <exception>
 #include <iostream>
 #include <stddef.h>
+#include <vector>
 
 namespace ab {
 
@@ -68,6 +69,14 @@ public:
         }
     }
 
+    T& front() {
+        return vec_[0];
+    }
+
+    T& back() {
+        return vec_[size_ - 1];
+    }
+
     bool empty() const {
         return size_ == 0;
     }
@@ -78,6 +87,18 @@ public:
 
     size_t capacity() const {
         return capacity_;
+    }
+
+    void clear() {
+        size_ = 0;
+    }
+
+    T* begin() {
+        return vec_;
+    }
+
+    T* end() {
+        return vec_ + size_ * sizeof(T);
     }
 
     bool operator==(const Vector& other) const {
@@ -130,7 +151,17 @@ int main() {
     
     v.pop_back();
     
+    printVector(v);
 
+    std::cout << "Front: " << v.front() << " \nBack: " << v.back() << '\n';
+    std::cout << "Element v[5]: " << v[5] << '\n';
+    std::cout << "Element at(2): " << v.at(2) << '\n';
+    std::cout << "Begin: " << v.begin() << " Value: " << *(v.begin()) << '\n';
+    std::cout << "End: " << v.end() << " Value: " << *(v.end() - sizeof(int)) << '\n';
+
+
+    v.clear();
+    std::cout << "After clear: " << v.size() << '\n';
     printVector(v);
 
     return 0;
